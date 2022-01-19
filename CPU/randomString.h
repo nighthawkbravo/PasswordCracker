@@ -15,11 +15,13 @@ private:
 	string passwordHash;
 	int length;
 
+	int RandomLowerCase();
+	int RandomUpperCase();
+	int RandomNumber();
 	
 public:
-	RandomString(int start, int end);
+	RandomString(int len);
 
-	inline string getPasswordHash() { return passwordHash; }
 	inline int getLength() { return length; }
 
 	bool checkPassword(string guess);
@@ -27,5 +29,5 @@ public:
 	string convertToString(char* a, int size);
 
 	inline string getPassword() { return password; }
-
+	inline string getHashPassword() { return passwordHash; }
 };

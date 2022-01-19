@@ -5,20 +5,32 @@
 using std::cout;
 using std::endl;
 
-RandomString::RandomString(int start, int end) {
+RandomString::RandomString(int len) {
 	srand(time(NULL));
 
 	//length = rand() % 11 + 5 // 5 - 10
-	length = 10;
-	char* wordChar = new char[10];
+	char* wordChar = new char[len];
 
-	for (int i = 0; i < length; ++i) {
-		char c = char(rand() % (end + 1) + start);
+	for (int i = 0; i < len; ++i) {
+		int k = rand() % 3; // 0,1,2
+		char c;
+		switch (k) {
+			case 0:
+				c = char (RandomLowerCase());
+				break;
+			case 1:
+				c = char(RandomUpperCase());
+				break;
+			case 2:
+				c = char(RandomNumber());
+				break;
+		}
+		
 		wordChar[i] = c;
-		cout << wordChar[i] << " : " << c << endl;
+		//cout << wordChar[i] << " : " << c << " : "<< int(c) << endl;
 	}
 
-	
+	password = convertToString(wordChar, len);
 
 	//password = convertToString(wordChar, length);
 	passwordHash = sha256(password);
@@ -28,7 +40,7 @@ bool RandomString::checkPassword(string guess) {
 	return password.compare(guess);
 }
 
-string convertToString(char* a, int size)
+string RandomString::convertToString(char* a, int size)
 {
 	int i;
 	string s = "";
@@ -37,3 +49,17 @@ string convertToString(char* a, int size)
 	}
 	return s;
 }
+
+// Letters a-z : 97-122
+int RandomString::RandomLowerCase() {
+	return rand() % (25 + 1) + 97;
+}
+// Letters A-Z : 65-90
+int RandomString::RandomUpperCase() {
+	return rand() % (25 + 1) + 65;
+}
+// numbers 0-9 : 48-57
+int RandomString::RandomNumber() {
+	return rand() % (9 + 1) + 48;
+}
+
