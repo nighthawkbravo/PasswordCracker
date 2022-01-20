@@ -18,6 +18,7 @@ private:
 	int RandomLowerCase();
 	int RandomUpperCase();
 	int RandomNumber();
+	int RandomChar();
 	
 public:
 	RandomString(int len);

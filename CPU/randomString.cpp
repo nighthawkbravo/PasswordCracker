@@ -14,7 +14,7 @@ RandomString::RandomString(int len) {
 	for (int i = 0; i < len; ++i) {
 		int k = rand() % 3; // 0,1,2
 		char c;
-		switch (k) {
+		/*switch (k) {
 			case 0:
 				c = char (RandomLowerCase());
 				break;
@@ -24,7 +24,8 @@ RandomString::RandomString(int len) {
 			case 2:
 				c = char(RandomNumber());
 				break;
-		}
+		}*/
+		c = char(RandomChar());
 		
 		wordChar[i] = c;
 		//cout << wordChar[i] << " : " << c << " : "<< int(c) << endl;
@@ -37,7 +38,8 @@ RandomString::RandomString(int len) {
 }
 
 bool RandomString::checkPassword(string guess) {
-	return password.compare(guess);
+	if (passwordHash.compare(guess) == 0) return true;
+	return false;
 }
 
 string RandomString::convertToString(char* a, int size)
@@ -61,5 +63,9 @@ int RandomString::RandomUpperCase() {
 // numbers 0-9 : 48-57
 int RandomString::RandomNumber() {
 	return rand() % (9 + 1) + 48;
+}
+
+int RandomString::RandomChar() {
+	return rand() % (74 + 1) + 48;
 }
 

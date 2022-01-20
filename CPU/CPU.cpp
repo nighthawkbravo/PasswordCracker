@@ -3,6 +3,9 @@
 #include "sha256.h"
 #include <iostream>
 #include "RandomString.h"
+#include <string>
+#include "Algorithm.h"
+
 
 // ASCII
 // numbers 0-9 : 48-57
@@ -15,12 +18,17 @@ using std::endl;
 
 int main()
 {
-    string input = "lucas";
-    string output1 = sha256(input);
+    int len = 3;
+    RandomString RS(len);
 
-    RandomString RS(10);
+    cout << endl;
+    cout << "Password: " << RS.getPassword() << endl;
+    cout << "Password Hash:" << RS.getHashPassword() << endl;
 
-    cout << RS.getPassword() << endl;
-    cout << RS.getHashPassword() << endl;
+    Algorithm A(RS.getHashPassword(), len);
+
+    A.solve(RS, 48, 122);
+
     return 0;
 }
+
