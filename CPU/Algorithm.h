@@ -20,6 +20,6 @@ public:
 	}
 
 	~Algorithm() {
-		delete guess;
+		delete[] guess;
 	}
 };

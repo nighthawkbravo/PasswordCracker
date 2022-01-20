@@ -34,14 +34,16 @@ void Algorithm::solve(RandomString rs, int b, int t) {
 	}
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
-	auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 
 	std::cout << "Password Cracked: " << s;
 	std::cout << " Time: " << duration.count() << "ns (nanoseconds)" << std::endl;
 
 	std::cout << "Password Cracked: " << s;
-	std::cout << " Time: " << duration2.count() << " (milliseconds)" << std::endl;
+	std::cout << " Time: " << duration.count() / 1000000.0 << " (milliseconds)" << std::endl;
 
 	std::cout << "Password Cracked: " << s;
 	std::cout << " Time: " << duration.count() / 1000000000.0 << " (seconds)" << std::endl;
+
+	delete[] guessChar;
+	
 }
