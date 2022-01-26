@@ -1,10 +1,19 @@
 ﻿
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
+#include "sha256.h"
+#include <string>
+#include <math.h> 
+#include <iostream>
+
 
 #include <stdio.h>
 
+using std::cout;
+
 cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size);
+
+int** preprocess(int len, int base, int div, int bottom, int top);
 
 __global__ void addKernel(int *c, const int *a, const int *b)
 {
@@ -14,28 +23,38 @@ __global__ void addKernel(int *c, const int *a, const int *b)
 
 int main()
 {
-    const int arraySize = 5;
+    /*const int arraySize = 5;
     const int a[arraySize] = { 1, 2, 3, 4, 5 };
     const int b[arraySize] = { 10, 20, 30, 40, 50 };
-    int c[arraySize] = { 0 };
+    int c[arraySize] = { 0 };*/
 
     // Add vectors in parallel.
-    cudaError_t cudaStatus = addWithCuda(c, a, b, arraySize);
+    /*cudaError_t cudaStatus = addWithCuda(c, a, b, arraySize);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "addWithCuda failed!");
         return 1;
     }
 
     printf("{1,2,3,4,5} + {10,20,30,40,50} = {%d,%d,%d,%d,%d}\n",
-        c[0], c[1], c[2], c[3], c[4]);
+        c[0], c[1], c[2], c[3], c[4]);*/
 
     // cudaDeviceReset must be called before exiting in order for profiling and
     // tracing tools such as Nsight and Visual Profiler to show complete traces.
-    cudaStatus = cudaDeviceReset();
+    /*cudaStatus = cudaDeviceReset();
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaDeviceReset failed!");
         return 1;
-    }
+    }*/
+
+    int** a = preprocess(2,74,5,48,122);
+
+
+    delete[] a;
+
+
+
+
+
 
     return 0;
 }
@@ -118,4 +137,62 @@ Error:
     cudaFree(dev_b);
     
     return cudaStatus;
+}
+
+int** preprocess(int len, int base, int div, int bottom, int top) {
+
+    unsigned long long* base10 = new unsigned long long[2*div];
+    
+    int** baseB = new int*[2 * div];
+    for (int j = 0; j < 2 * div; ++j)
+        baseB[j] = new int[len];
+
+    unsigned long long total_permutations = (unsigned long long) pow(base, len);
+    unsigned long long subdiv = total_permutations / div;
+
+    base10[0] = 0;
+
+    int i;
+    for (i = 1; i < 2*div-1; i+=2) {
+        base10[i] = base10[i - 1] + subdiv;
+        base10[i + 1] = base10[i] + 1;
+    }
+    base10[i] = total_permutations;
+    
+    /*for (int i = 0; i < 2 * div; ++i) {
+        cout << base10[i] << ", ";
+    }
+    cout << std::endl;*/
+
+    for (i = 0; i < len; ++i) {
+        baseB[0][i] = bottom;
+        baseB[2 * div-1][i] = top;
+    }
+
+    
+    unsigned long long k;
+    int l;
+    for (i = 1; i < 2 * div-1; ++i) {
+    
+        k = base10[i];
+        for (int j = 0; j < len; ++j) {
+            
+            l = k % base;
+            k = (k - l) / base;
+            
+            baseB[i][j] = l+bottom;
+        }
+    }
+
+    /*for (i = 0; i < 2 * div; ++i) {
+        for (int j = 0; j < len; ++j) {
+            cout << baseB[i][j] << ", ";
+        }
+        cout << std::endl;
+    }
+    cout << std::endl;*/
+
+    return baseB;
+    //delete[] baseB;
+    delete base10;
 }
