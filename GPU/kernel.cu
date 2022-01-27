@@ -9,10 +9,13 @@
 #include <stdio.h>
 #include <chrono>
 
-#define BLOCKS 1
+// DIVISIONS should be the same as BLOCKS*THREADSPERBLOCK
 
-#define LEN 5
-#define DIVISIONS 1024
+#define BLOCKS 2
+#define THREADSPERBLOCK 1024
+
+#define LEN 6
+#define DIVISIONS 2048
 #define BASE 74
 #define BOTTOM 48
 #define TOP 122
@@ -281,7 +284,7 @@ cudaError_t crackWithCuda(int len, int base, int div, int bottom, int top, int* 
 
 
     // Launch a kernel on the GPU.
-    crackKernal<<<BLOCKS, DIVISIONS>>>(LEN, BASE, TOP, BOTTOM, dev_quit, dev_password, dev_ranges);
+    crackKernal<<<BLOCKS, THREADSPERBLOCK>>>(LEN, BASE, TOP, BOTTOM, dev_quit, dev_password, dev_ranges);
 
     
 
