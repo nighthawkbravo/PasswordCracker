@@ -9,7 +9,7 @@ RandomString::RandomString(int len) {
 	srand(time(NULL));
 
 	//length = rand() % 11 + 5 // 5 - 10
-	char* wordChar = new char[len];
+	char* wordChar = new char[len];	
 
 	for (int i = 0; i < len; ++i) {
 		int k = rand() % 3; // 0,1,2
@@ -37,6 +37,9 @@ RandomString::RandomString(int len) {
 	passwordHash = sha256(password);
 }
 
+RandomString::~RandomString() {	
+}
+
 bool RandomString::checkPassword(string guess) {
 	if (passwordHash.compare(guess) == 0) return true;
 	return false;
@@ -50,6 +53,16 @@ string RandomString::convertToString(char* a, int size)
 		s = s + a[i];
 	}
 	return s;
+}
+
+
+int* RandomString::convertToIntArr(string s, int size) {
+	array = new int[size];
+
+	for (int i = 0; i < size; ++i) {
+		array[i] = (int) s[i];
+	}
+	return array;
 }
 
 // Letters a-z : 97-122
