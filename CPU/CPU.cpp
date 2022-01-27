@@ -18,7 +18,7 @@ using std::endl;
 
 int main()
 {
-    int len = 3;
+    int len = 4;
     RandomString RS(len);
 
     cout << endl;
