@@ -37,20 +37,6 @@ __global__ void addKernel(int *c, const int *a, const int *b)
 int main()
 {
     
-    // Add vectors in parallel.    
-    /*
-    
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "addWithCuda failed!");
-        return 1;
-    }
-
-    printf("{1,2,3,4,5} + {10,20,30,40,50} = {%d,%d,%d,%d,%d}\n",
-        c[0], c[1], c[2], c[3], c[4]);
-        
-        */
-
-
     RandomString RS(LEN);
 
     cout << endl;
@@ -61,22 +47,23 @@ int main()
     int* passwordInt = RS.convertToIntArr(RS.getPassword(), LEN);    
 
     
-    //cudaError_t cudaStatus = addWithCuda(c, a, b, arraySize);
-    
     int** ranges = preprocess(LEN, BASE, DIVISIONS, BOTTOM, TOP);
-    crackWithCuda(LEN, BASE, DIVISIONS, BOTTOM, TOP, passwordInt, ranges);
-    
+    cudaError_t cudaStatus = crackWithCuda(LEN, BASE, DIVISIONS, BOTTOM, TOP, passwordInt, ranges);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "crackWithCuda failed!");
+        return 1;
+    }
 
     
 
 
     // cudaDeviceReset must be called before exiting in order for profiling and
     // tracing tools such as Nsight and Visual Profiler to show complete traces.
-    /*cudaStatus = cudaDeviceReset();
+    cudaStatus = cudaDeviceReset();
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaDeviceReset failed!");
         return 1;
-    }*/
+    }
 
     delete[] ranges;
     delete passwordInt;
