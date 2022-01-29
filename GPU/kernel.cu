@@ -14,7 +14,7 @@
 #define BLOCKS 2
 #define THREADSPERBLOCK 1024
 
-#define LEN 6
+#define LEN 5
 #define DIVISIONS 2048
 #define BASE 74
 #define BOTTOM 48
@@ -28,6 +28,15 @@ using std::endl;
 cudaError_t crackWithCuda(int len, int base, int div, int bottom, int top, int* password, int* quit, int** arr);
 
 int** preprocess(int len, int base, int div, int bottom, int top);
+
+void hashfunc(int* arr, int size);
+
+__device__ int* devicehashfunc(int* arr, int size) {
+    for (int i = 0; i < size; ++i) {
+        arr[i] = arr[i] << 2;
+    }
+    return arr;
+}
 
 __device__ bool checkArrays(int size, int* password, int* guess) {
     for (int i = 0; i < size; ++i) 
@@ -114,7 +123,7 @@ int main()
     quit[0] = 0;
 
     int** ranges = preprocess(LEN, BASE, DIVISIONS, BOTTOM, TOP);
-    
+    //hashfunc(passwordInt, LEN);
 
     auto start = std::chrono::high_resolution_clock::now();
     cudaError_t cudaStatus = crackWithCuda(LEN, BASE, DIVISIONS, BOTTOM, TOP, passwordInt, quit, ranges);
@@ -323,7 +332,11 @@ Error:
     return cudaStatus;
 }
 
-
+void hashfunc(int* arr, int size) {
+    for (int i = 0; i < size; ++i) {
+        arr[i] = arr[i] << 2;
+    }
+}
 
 
 
@@ -347,6 +360,7 @@ Error:
 
 3.) Sometimes doesn't work and loops forever (Unknown cause).
     - Perhaps this is caused by incorrect indexing of the threads and the ranges assigned to them.
+    - SOLVED
 
 
 
@@ -354,6 +368,10 @@ Error:
 
 
 */
+
+
+
+
 
 // Old stuff
 
