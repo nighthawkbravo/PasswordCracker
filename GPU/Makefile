@@ -1,3 +1,6 @@
+all: passwordCrackerGPU
+.PHONY: all
+
 # CC compiler options:
 CC=g++
 
@@ -19,5 +22,3 @@ passwordCrackerGPU: kernel.o sha256.o randomString.o
 
 clean:
 	rm passwordCrackerGPU kernel.o sha256.o randomString.o
-	
-.PHONY: clean

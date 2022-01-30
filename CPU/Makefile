@@ -1,3 +1,6 @@
+all: passwordCrackerCPU
+.PHONY: all
+
 # CC compiler options:
 CC=g++
 
@@ -19,4 +22,3 @@ passwordCrackerCPU: CPU.o Algorithm.o sha256.o randomString.o
 clean:
 	rm passwordCrackerCPU CPU.o sha256.o randomString.o Algorithm.o
 	
-.PHONY: clean
