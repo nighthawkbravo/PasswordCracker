@@ -1,6 +1,6 @@
 ﻿
 #include "cuda_runtime.h"
-#include "RandomString.h"
+#include "randomString.h"
 #include "device_launch_parameters.h"
 #include "sha256.h"
 #include <string>

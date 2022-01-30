@@ -2,7 +2,7 @@
 // sha256 C++ http://www.zedwood.com/article/cpp-sha256-function
 #include "sha256.h"
 #include <iostream>
-#include "RandomString.h"
+#include "randomString.h"
 #include <string>
 #include "Algorithm.h"
 
