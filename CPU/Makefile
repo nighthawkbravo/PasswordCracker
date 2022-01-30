@@ -16,8 +16,8 @@ Algorithm.o: Algorithm.cpp Algorithm.h
 CPU.o: CPU.cpp
 	$(CC) -c CPU.cpp
 
-passwordCrackerCPU: CPU.o Algorithm.o sha256.o randomString.o
-	$(CC) -o randomString.o sha256.o Algorithm.o CPU.o
+passwordCrackerCPU: sha256.o randomString.o Algorithm.o CPU.o
+	$(CC) -o passwordCrackerCPU randomString.o sha256.o Algorithm.o CPU.o
 
 clean:
 	rm passwordCrackerCPU CPU.o sha256.o randomString.o Algorithm.o

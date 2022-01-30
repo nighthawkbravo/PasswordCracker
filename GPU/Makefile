@@ -16,8 +16,8 @@ randomString.o: randomString.cpp randomString.h
 kernel.o: kernel.cu
 	$(NVCC) -c kernel.cu
 
-passwordCrackerGPU: kernel.o sha256.o randomString.o
-	$(CC) -o randomString.o sha256.o kernel.o
+passwordCrackerGPU: sha256.o randomString.o kernel.o
+	$(CC) -o passwordCrackerGPU randomString.o sha256.o kernel.o
 
 clean:
 	rm passwordCrackerGPU kernel.o sha256.o randomString.o
